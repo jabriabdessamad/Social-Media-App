@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/constants/dimensions.dart';
+import 'package:social_media_app/utils/dimensions.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   final Widget webScreenLayout;
