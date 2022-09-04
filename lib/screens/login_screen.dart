@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:social_media_app/resources/auth_methods.dart';
+import 'package:social_media_app/responsive/mobile_screen_layout.dart';
+import 'package:social_media_app/responsive/responsive_layout_screen.dart';
+import 'package:social_media_app/responsive/web_screen_layout.dart';
 import 'package:social_media_app/utils/colors.dart';
+import 'package:social_media_app/utils/utils.dart';
 import 'package:social_media_app/widgets/text_field_input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -20,6 +26,21 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().loginUser(
+        email: _emailController.text, password: _passwordController.text);
+    if (res == 'success') {
+    } else {
+      showSnackBar(res, context);
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -61,7 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 25,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  loginUser();
+                },
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
@@ -70,7 +93,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: blueColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5)))),
-                  child: const Text('Log in'),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        )
+                      : const Text('Log in'),
                 ),
               ),
               const SizedBox(
@@ -87,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 5,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: loginUser,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: const Text(

@@ -37,6 +37,31 @@ class AuthMethods {
         });
         res = "success";
       }
+    } on FirebaseAuthException catch (err) {
+      if (err.code == 'invalid-email') {
+        res = 'please enter a valid email';
+      } else if (err.code == 'weak-password') {
+        res = 'your password is weak';
+      } else {
+        res = err.toString();
+      }
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  Future<String> loginUser(
+      {required String email, required String password}) async {
+    String res = 'failed to login';
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        res = "success";
+      } else {
+        res = "please enter both your email and password";
+      }
     } catch (err) {
       res = err.toString();
     }
