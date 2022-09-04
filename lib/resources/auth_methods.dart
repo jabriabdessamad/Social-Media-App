@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import "package:social_media_app/models/user.dart" as UserModel;
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -24,17 +23,19 @@ class AuthMethods {
         // register user
         UserCredential credential = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
-        print(credential.user!.uid);
 
+        UserModel.User _user = UserModel.User(
+            username: username,
+            email: email,
+            uid: credential.user!.uid,
+            bio: bio,
+            followers: [],
+            following: []);
         // add user to database
-        _firestore.collection('users').doc(credential.user!.uid).set({
-          "username": username,
-          "uid": credential.user!.uid,
-          "email": email,
-          "bio": bio,
-          "followers": [],
-          "following": []
-        });
+        _firestore
+            .collection('users')
+            .doc(credential.user!.uid)
+            .set(_user.toJson());
         res = "success";
       }
     } on FirebaseAuthException catch (err) {

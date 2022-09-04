@@ -4,6 +4,7 @@ import 'package:social_media_app/resources/auth_methods.dart';
 import 'package:social_media_app/responsive/mobile_screen_layout.dart';
 import 'package:social_media_app/responsive/responsive_layout_screen.dart';
 import 'package:social_media_app/responsive/web_screen_layout.dart';
+import 'package:social_media_app/screens/signup_screen.dart';
 import 'package:social_media_app/utils/colors.dart';
 import 'package:social_media_app/utils/utils.dart';
 import 'package:social_media_app/widgets/text_field_input.dart';
@@ -35,12 +36,24 @@ class _LoginScreenState extends State<LoginScreen> {
     String res = await AuthMethods().loginUser(
         email: _emailController.text, password: _passwordController.text);
     if (res == 'success') {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout())),
+          (route) => false);
     } else {
       showSnackBar(res, context);
     }
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void switchToSignup() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => SignupScreen()));
   }
 
   @override
@@ -116,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 5,
                   ),
                   GestureDetector(
-                    onTap: loginUser,
+                    onTap: switchToSignup,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: const Text(

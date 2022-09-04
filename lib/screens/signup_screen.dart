@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:social_media_app/screens/login_screen.dart';
 import 'package:social_media_app/utils/colors.dart';
 import 'package:social_media_app/resources/auth_methods.dart';
 import 'package:social_media_app/widgets/text_field_input.dart';
 import 'package:social_media_app/utils/utils.dart';
+
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout_screen.dart';
+import '../responsive/web_screen_layout.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -39,12 +44,25 @@ class _SignupScreenState extends State<SignupScreen> {
         username: _usernameController.text,
         bio: _bioController.text);
 
-    if (res != 'success') {
+    if (res == 'success') {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout())),
+          (route) => false);
+    } else {
       showSnackBar(res, context);
     }
     setState(() {
       _isLoading = false;
     });
+  }
+
+  void switchToLogin() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
   @override
@@ -133,11 +151,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       width: 5,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: switchToLogin,
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: const Text(
-                          "Sign up",
+                          "Login",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
