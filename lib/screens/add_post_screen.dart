@@ -26,7 +26,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
     String uid,
     String username,
     // String profile Image
-  ) {}
+  ) async {
+    try {} catch (e) {}
+  }
 
   _selectImage(BuildContext context) async {
     return showDialog(
