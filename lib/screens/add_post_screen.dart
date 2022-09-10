@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/providers/user_provider.dart';
+import 'package:social_media_app/resources/firestore_methods.dart';
 import 'package:social_media_app/utils/colors.dart';
 import 'package:social_media_app/utils/utils.dart';
 import 'package:social_media_app/models/user.dart' as UserModel;
@@ -27,7 +28,17 @@ class _AddPostScreenState extends State<AddPostScreen> {
     String username,
     // String profile Image
   ) async {
-    try {} catch (e) {}
+    try {
+      String res = await FirestoreMethods()
+          .uploadPost(_descriptionController.text, _file!, uid, username);
+      if (res == "success") {
+        showSnackBar('posted', context);
+      } else {
+        showSnackBar(res, context);
+      }
+    } catch (err) {
+      showSnackBar(err.toString(), context);
+    }
   }
 
   _selectImage(BuildContext context) async {
@@ -89,14 +100,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               title: const Text('Post to'),
               actions: [
                 TextButton(
-                    onPressed: () {
-                      if (_descriptionController.text.isNotEmpty) {
-                        _firestore
-                            .collection('posts')
-                            .doc(_auth.currentUser!.uid)
-                            .set({});
-                      }
-                    },
+                    onPressed: () => postImage(user.uid, user.username),
                     child: const Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: Text(
