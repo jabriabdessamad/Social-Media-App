@@ -15,18 +15,92 @@ class _PostCardState extends State<PostCard> {
       color: mobileBackgroundColor,
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(children: [
+        //HEADER SECTION
         Container(
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15)
               .copyWith(right: 0),
           child: Row(
             children: [
               CircleAvatar(
-                radius: 15,
+                radius: 17,
                 backgroundImage: NetworkImage(
                     'https://images.unsplash.com/photo-1506269996138-4c6d92fbd8a5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXwxMTU2OTE1fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60'),
               ),
+              Expanded(
+                  child: Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "username",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ]),
+              )),
+              IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                              child: ListView(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                shrinkWrap: true,
+                                children: ['delete']
+                                    .map((e) => InkWell(
+                                          onTap: () {},
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: Text(e),
+                                          ),
+                                        ))
+                                    .toList(),
+                              ),
+                            ));
+                  },
+                  icon: Icon(Icons.more_vert))
             ],
           ),
+        ),
+        // IMAGE SECTION
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.35,
+          width: double.infinity,
+          child: Image.network(
+            'https://images.unsplash.com/photo-1506269996138-4c6d92fbd8a5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXwxMTU2OTE1fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
+            fit: BoxFit.cover,
+          ),
+        ),
+        Row(
+          children: [
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                )),
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.comment_outlined,
+                )),
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.send,
+                )),
+            Expanded(
+                child: Align(
+              alignment: Alignment.bottomRight,
+              child: IconButton(
+                icon: Icon(Icons.bookmark_border),
+                onPressed: () {},
+              ),
+            ))
+          ],
         )
       ]),
     );
