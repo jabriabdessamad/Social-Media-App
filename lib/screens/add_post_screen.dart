@@ -22,18 +22,29 @@ class _AddPostScreenState extends State<AddPostScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _isLoading = false;
 
   void postImage(
     String uid,
     String username,
     // String profile Image
   ) async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       String res = await FirestoreMethods()
           .uploadPost(_descriptionController.text, _file!, uid, username);
       if (res == "success") {
+        setState(() {
+          _isLoading = false;
+        });
+        clearImage();
         showSnackBar('posted', context);
       } else {
+        setState(() {
+          _isLoading = false;
+        });
         showSnackBar(res, context);
       }
     } catch (err) {
@@ -75,6 +86,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
         });
   }
 
+  void clearImage() {
+    setState(() {
+      _file = null;
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -95,8 +112,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () => _selectImage(context)),
+                  icon: Icon(Icons.arrow_back), onPressed: () => clearImage()),
               title: const Text('Post to'),
               actions: [
                 TextButton(
@@ -114,6 +130,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
               ],
             ),
             body: Column(children: [
+              _isLoading ? LinearProgressIndicator() : Container(),
+              SizedBox(
+                height: 5,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
