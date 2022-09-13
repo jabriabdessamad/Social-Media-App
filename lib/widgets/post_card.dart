@@ -101,6 +101,58 @@ class _PostCardState extends State<PostCard> {
               ),
             ))
           ],
+        ),
+        // Description and comments
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DefaultTextStyle(
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle2!
+                        .copyWith(fontWeight: FontWeight.w800),
+                    child: Text(
+                      '200 likes',
+                      style: Theme.of(context).textTheme.bodyText2,
+                    )),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.only(top: 8),
+                  child: RichText(
+                    text: TextSpan(
+                        style: const TextStyle(color: primaryColor),
+                        children: [
+                          TextSpan(
+                              text: 'username',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(
+                            text: '  this is the post description',
+                          ),
+                        ]),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 4),
+                    child: Text(
+                      'View all 50 comments',
+                      style: TextStyle(fontSize: 15, color: secondaryColor),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 4),
+                  child: Text(
+                    '22/5/2022',
+                    style: TextStyle(fontSize: 14, color: secondaryColor),
+                  ),
+                ),
+              ]),
         )
       ]),
     );
