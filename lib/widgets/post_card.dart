@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:social_media_app/utils/colors.dart';
 
-class PostCard extends StatefulWidget {
-  const PostCard({Key? key}) : super(key: key);
+class PostCard extends StatelessWidget {
+  final snap;
+  const PostCard({Key? key, required this.snap}) : super(key: key);
 
-  @override
-  State<PostCard> createState() => _PostCardState();
-}
-
-class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,7 +31,7 @@ class _PostCardState extends State<PostCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "username",
+                        snap['username'],
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )
                     ]),
@@ -115,7 +112,7 @@ class _PostCardState extends State<PostCard> {
                         .subtitle2!
                         .copyWith(fontWeight: FontWeight.w800),
                     child: Text(
-                      '200 likes',
+                      '${snap["likes"].length} likes',
                       style: Theme.of(context).textTheme.bodyText2,
                     )),
                 Container(
@@ -126,11 +123,11 @@ class _PostCardState extends State<PostCard> {
                         style: const TextStyle(color: primaryColor),
                         children: [
                           TextSpan(
-                              text: 'username',
+                              text: snap["username"],
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold)),
                           TextSpan(
-                            text: '  this is the post description',
+                            text: '  ${snap["description"]}',
                           ),
                         ]),
                   ),
@@ -146,9 +143,9 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 4),
+                  padding: EdgeInsets.symmetric(vertical: 5),
                   child: Text(
-                    '22/5/2022',
+                    DateFormat.yMMMd().format(snap['datePublished'].toDate()),
                     style: TextStyle(fontSize: 14, color: secondaryColor),
                   ),
                 ),
