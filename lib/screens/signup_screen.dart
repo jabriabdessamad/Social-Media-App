@@ -89,7 +89,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 TextFieldInput(
                     textEditingController: _usernameController,
-                    hintText: 'Enter your username',
+                    hintText: 'Enter your Username',
                     textInputType: TextInputType.text),
                 SizedBox(
                   height: 20,
